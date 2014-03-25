@@ -105,8 +105,6 @@ class Spree::ProductImport < ActiveRecord::Base
   end
 
 
-  private
-
   # create_variant_for
   # This method assumes that some form of checking has already been done to
   # make sure that we do actually want to create a variant.
@@ -265,7 +263,8 @@ class Spree::ProductImport < ActiveRecord::Base
     #An image has an attachment (the image file) and some object which 'views' it
     product_image = Spree::Image.new(attachment: file, position: product_or_variant.images.length)
     if product_image.save
-      product_image.update_column :viewable, product_or_variant
+      product_image.viewable = product_or_variant
+      product_image.save
       product_or_variant.images << product_image
     end
 
